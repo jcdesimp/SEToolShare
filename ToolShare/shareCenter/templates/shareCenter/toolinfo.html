@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+	<div class="jumbotron col-md-7" style="background-color: #FFFFFF; border-radius: 5px;">
+		<div class="container">
+			<h1>{{tName}}
+			
+			</h1>
+			<h2><b>Description</b></h2>
+			<p>{{tDesc}}</p>
+			<h2><b>Pickup Information</b></h2>
+			<p>{{pickupInfo}}</p>
+			<h3><b>Tool Location</b></h3>
+			<p>{{tLoc}}</p>
+			<p>{{wellFormatedAddress|linebreaks}}</p>
+			
+			{% if availability %}
+                {% if tool.isReserved %}
+                    <span class="label label-warning">Reserved</span>
+                {% else %}
+		    	    <span class="label label-success">Available</span>
+                {% endif %}
+		  	{%else%}
+		    	<span class="label label-danger">Unavailable</span>
+		    {% endif %}
+		    <br>
+		    {% if user.id == ownerId %}
+               <a type="button" href="/sharecenter/tool/delete/{{tool.id}}/" class="btn btn-danger pull-left" style="margin-right: 10px; margin-top: 20px">Remove Tool</a>
+               <a type="button" href="/sharecenter/tool/edit/{{tool.id}}/" class="btn btn-primary pull-left" style="margin-right: 10px; margin-top: 20px">Edit Information</a>
+            {% endif %} 
+            {% if availability %}
+                {% if tool.inShed %}
+                    <a type='button' class='btn btn-primary pull-right' href="/messagecenter/sendrequest/{{tool.id}}/" style="margin-right: 10px; margin-top: 20px">Reserve</a>
+                {% else %}
+                    <a type='button' class='btn btn-primary pull-right' href="/messagecenter/sendrequest/{{tool.id}}/" style="margin-right: 10px; margin-top: 20px">Request</a>
+                {% endif %}
+
+            {% endif %}
+	   </div>
+	</div>
+	<div class="hero-unit col-md-4 pull-right" style="background-color: #FFFFFF; border-radius: 5px;">
+		<div class="container" style="padding-bottom: 8%">
+	    	<h1>Owner Info</h1>
+	    	<h4><b>Username:</b> <a href="/sharecenter/user/{{ownerUsername}}">{{ownerUsername}}</a></h4>
+	    	<h4><b>Email:</b> <a href="mailto:{{ownerEmail}}">{{ownerEmail}}</a></h4>
+	    	<a type="button" href="/messagecenter/sendMessage/{{ ownerId }}" class="btn btn-primary">Message Owner</a>
+	    </div>
+	</div>
+	
+	<div class="col-md-4 pull-right" class="img-responsive" style="background-color: #FFFFFF; border-radius: 5px; margin-top: 15px; padding: 1%">
+		
+	    	<div id="map_canvas" class="img-responsive" style="border-radius: 5px;"></div>
+	    
+	</div>
+		
+	
+	<!-- Google Maps -->
+	
+	<head>
+    	<style>
+      		#map_canvas {
+        		width: 500px;
+        		height: 400px;
+      		}
+    	</style>
+	    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	    <script>
+	    	var directionsDisplay;
+			var directionsService = new google.maps.DirectionsService();
+			var map, geocoder;
+			var marker;
+			var routeToHomeDiv = document.createElement('div');
+  			var routeControl = new RouteControl(routeToHomeDiv, map);
+	    	
+	    	function initialize() {
+	    		geocoder = new google.maps.Geocoder();
+	    		directionsDisplay = new google.maps.DirectionsRenderer();
+	        	var map_canvas = document.getElementById('map_canvas');
+	        	var map_options = {
+	          		center: new google.maps.LatLng(-34.397, 150.644),
+	          		zoom: 14,
+	        	}
+	        	map = new google.maps.Map(map_canvas, map_options);
+  				directionsDisplay.setMap(map);
+  				
+  				routeToHomeDiv.index = 1;
+  				map.controls[google.maps.ControlPosition.TOP_RIGHT].push(routeToHomeDiv);
+  				codeAddress('{{ownerAddress}}');
+	      	}
+	      	function codeAddress(address) {
+			    geocoder.geocode( { 'address': address}, function(results, status) {
+			      if (status == google.maps.GeocoderStatus.OK) {
+			        map.setCenter(results[0].geometry.location);
+			        marker = new google.maps.Marker({
+			            map: map,
+			            position: results[0].geometry.location
+			        });
+			      }
+			    });
+			}
+     	
+	      	function calcRoute() {
+				var request = {
+					origin:'{{userAddress}}',
+					destination:'{{ownerAddress}}',
+					travelMode: google.maps.TravelMode.DRIVING
+				};
+				directionsService.route(request, function(response, status) {
+					if (status == google.maps.DirectionsStatus.OK) {
+						directionsDisplay.setDirections(response);
+					}
+				});
+			}
+			
+			function RouteControl(controlDiv, map) {
+
+			  controlDiv.style.padding = '5px';
+			
+			  // Set CSS for the control border
+			  var controlUI = document.createElement('div');
+			  controlUI.style.backgroundColor = 'white';
+			  controlUI.style.borderStyle = 'solid';
+			  controlUI.style.borderWidth = '2px';
+			  controlUI.style.borderRadius = '5px';
+			  controlUI.style.cursor = 'pointer';
+			  controlUI.style.textAlign = 'center';
+			  controlUI.title = 'Click to route from home';
+			  controlUI.class = 'btn-default';
+			  controlDiv.appendChild(controlUI);
+			
+			  // Set CSS for the control interior
+			  var controlText = document.createElement('div');
+			  controlText.style.fontFamily = 'Arial,sans-serif';
+			  controlText.style.fontSize = '12px';
+			  controlText.style.paddingLeft = '4px';
+			  controlText.style.paddingRight = '4px';
+			  controlText.innerHTML = '<b>Route From Home</b>';
+			  controlUI.appendChild(controlText);
+
+			  google.maps.event.addDomListener(controlUI, 'click', function() {
+			    marker.setMap(null);
+			    calcRoute(); 
+			  });
+			
+			}
+			
+	      	google.maps.event.addDomListener(window, 'load', initialize);
+	      	
+	   </script>
+	</head>
+	
+	
+  
+  <!-- End Google Maps -->
+
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Credits{% endblock %}
+
+{% block content %}
+	<div class="container" style="background-color: #FFFFFF; border-radius: 10px; " >
+    	<h1 style="text-align: center">Credits</h1>
+    	<div class="form-group container" style="max-width: 600px;">
+    		<h4 style="text-align: center">Joseph DeSimpliciis - Development Coordinator</h4>
+    		<h4 style="text-align: center">Zach Samuelson - Test Coordinator</h4>
+			<h4 style="text-align: center">John Murray - Requirements Coordinator</h4>
+			<h4 style="text-align: center">Jeffrey Haines - Team Coordinator</h4>
+			<h4 style="text-align: center">Austin Klein - Configuration/QA Coordinator</h4>
+    	</div><br>
+    	<div class="col-md-6">
+          <img class="featurette-image img-responsive" src="{{STATIC_URL}}img/Monkey.gif" style="border-radius: 15px; margin-bottom: 10px" alt="Generic placeholder image">
+        </div>
+        <div class="col-md-6">
+          <img class="featurette-image img-responsive pull-right" src="{{STATIC_URL}}img/Stewart.gif" style="border-radius: 15px; margin-bottom: 10px" alt="Generic placeholder image">
+        </div><br>
+	</div>
+    <br>
+
+{% endblock %}

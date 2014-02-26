@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.css"/> 
+    <script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js"></script>
+    
+    <!--  Mobile Device Scaling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--- http://backgrounds.mysitemyway.com/wp-content/Userfiles/Galleries/wood/wood-002737-medium-gold.jpg -->
+    <style type="text/css">
+    
+        body {background-color: #B3B3B3; background-attachment:fixed;}
+        
+        /* Sticky footer styles
+        background-image:url('http://www.use.com/images/templates/bynum/6000/usetemp01867.jpg')
+      -------------------------------------------------- */
+
+
+        
+        /* Wrapper for page content to push down footer */
+        #wrap {
+          min-height: 100%;
+          height: auto;
+          height: 100%;
+          /* Negative indent footer by its height */
+          margin: 0 auto -60px;
+          /* Pad bottom by footer height */
+          padding: 0 0 60px;
+        }
+        
+        /* Set the fixed height of the footer here */
+        #footer {
+          height: 60px;
+          background-color: #f5f5f5;
+        }
+
+        
+        
+    </style>
+    
+
+    
+    <title>{% block title %}Tool Share{% endblock %}</title>
+</head>
+
+<body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//code.jquery.com/jquery.js"></script>
+
+    
+    
+    <header class="navbar navbar-fixed-top" style="background-color: #FFFFFF; color: #FF0000" role="banner">
+    <nav class="collapse navbar-default navbar-collapse bs-navbar-collapse" style="margin-top: 0px;" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header" style="">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">Tool Share</a>
+      </div>
+    
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+        <!-- class="active" -->
+          <li><a href="/">Home</a></li>
+          {% if user.is_authenticated %}
+            <li><a href="/tooldirectory/">Tool Directory</a></li>
+            
+          {% endif %}
+          
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.username}} <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+               <li><a href="/sharecenter/user/{{user.username}}">My Profile</a></li>
+               <li><a href="/sharecenter/addtool/">Add Tool</a></li>
+               <li><a href="#">Settings</a></li>
+              
+              {% if user.is_staff %}
+                <li><a href="/admin/">Admin Panel</a></li>
+              
+              {% endif %}  
+            </ul>
+          </li>
+          
+          <li><a href="/messagecenter/">Messages <span class="badge">{{msgAmount}}</span></a></li>
+          <li><a href="/logout/">Logout</a></li>
+        {% else %}
+          <li><a href="/login/">Login</a></li>
+          <li><a href="/registration/">Register</a></li>
+        {% endif %}
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+    </header>
+    
+    
+    
+    
+    <!-- DJANGO NAV SIDEBAR
+    <br><br><br>
+    <div id="sidebar">
+        {% block sidebar %}
+        <ul>
+            <li><a href="/login/">Home</a></li>
+            <li><a href="/tooldirectory/">Tool Directory</a></li>
+            <li><a href="/admin/">Admin Page</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="/logout/">Logout</a></li>
+            {% endif %}    
+        </ul>
+        {% endblock %}
+    </div>
+    -->
+    <div id="wrap" style="margin-top: 100px">
+    <div id="content">
+        {% block content %}{% endblock %}
+        <div id="push"></div>
+    </div>
+    <footer class="navbar-fixed-bottom" style="margin-top: 20px; background-color: #FFFFFF;">
+      <!-- Brand and toggle get grouped for better mobile display -->
+        <h5 style="text-align: center">Created by Group 2 · SWEN261- 04</h5>
+      </footer>
+    </div>
+    </div>
+
+
+</div>
+</body>
+</html>

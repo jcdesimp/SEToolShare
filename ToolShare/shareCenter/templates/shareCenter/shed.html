@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="background-color: #FFFFFF; border-radius: 10px; " >
+		<div class="container">
+	    	<h1 class="page-header" style="text-align: center; padding-left: 12%">{{username}}'s Shed <a class="btn btn-danger pull-right" href="/sharecenter/deleteshed/">Remove Shed</a></h1>
+			<table class="table table-hover bordered " style="table-layout: fixed; word-wrap: break-word; ">
+	    	<thead>
+				<tr>
+	    			<th style="min-width: 60px">Name</th>
+	    			<th style="min-width: 120px">Owner</th>
+                    <th style="min-width: 140px">Availability</th>
+                    <th style="width: 300px"></th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				{% for t in shedTools %}
+				<tr>
+					<td>{{ t.name }}</td>
+		    		<td><a href='/sharecenter/user/{{ t.owner.user.username }}'>{{ t.owner.user.username }}</a></td>
+		    		{% if t.available %}
+                        {% if t.isReserved %}
+                            <td><span class="label label-warning">Reserved</span></td>
+                        {% else %}
+                            <td><span class="label label-success">Available</span></td>
+                        {% endif %}
+                    {% else %}
+                    <td><span class="label label-danger">Unavailable</span></td>
+                    {% endif %}
+                    <td>
+                        <a href='/sharecenter/tool/{{t.id}}/' type="button" class="btn btn-default pull-right" style="margin-left: 8px">More Info</a>
+
+                        {% if t.available %}
+
+                            <a href="/sharecenter/tool/changestate/{{t.id}}/" type="=button" rel=tooltip title="Make Unavailable" data-placement="left"
+                               class="btn btn-danger pull-right"><span class="glyphicon glyphicon-ban-circle"></span></a>
+                        {% else %}
+                            <a href="/sharecenter/tool/changestate/{{t.id}}/" type="=button" rel=tooltip title="Make Available" data-placement="left"
+                               class="btn btn-success pull-right"><span class="glyphicon glyphicon-ok"></span></a>
+                        {% endif %}
+
+                    </td>
+
+		    		
+		    	</tr> 
+				{% endfor %}	
+			</tbody> 
+			</table>
+			{% if numTools = 0 %}
+                <h4 style="text-align: center">No Tools</h4><br>
+            {% endif %}  
+	    </div>
+	</div>
+</div>
+</div>
+{% endblock %}

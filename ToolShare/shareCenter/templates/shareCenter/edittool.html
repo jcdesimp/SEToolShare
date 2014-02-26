@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Add a Tool{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+    <form action="/sharecenter/tool/edit/{{tool_id}}" class="container" style="max-width: 350px; background-color: #FFFFFF; border-radius: 10px" method="post">{% csrf_token %}
+        <h1 style="text-align: center">Tool Edit</h1>
+        <div class="form-group container">
+            {{form.as_p}}
+            <button type="submit" class="btn btn-primary btn-block">Save Information</button>
+        </div>
+        </form>
+    {% else %}
+        <h1 style="text-align: center">You must be logged in to submit this form</h1>
+    {% endif %}
+    
+{% endblock %}

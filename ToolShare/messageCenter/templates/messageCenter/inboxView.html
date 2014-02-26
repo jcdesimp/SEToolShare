@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="background-color: #FFFFFF; border-radius: 10px;" >
+
+    <h1 style="text-align: center">Your Messages</h1>
+    <table class="table table-hover bordered " style="table-layout: fixed; word-wrap: break-word; ">
+        <thead>
+	        <tr>
+	           <th style="min-width: 60px">Type</th>
+	           <th style="min-width: 240px">Sender</th>
+	           <th style="min-width: 60px"></th>
+	           <th style="width: 120px"></th>   
+	        </tr>
+	    </thead>
+	    
+	    <tbody>
+	        
+	        {% for m in allMessages %}
+	        <tr>
+	            <td>{{ m.subject }}</td>
+	            <td>{{ m.senderUsername }}</td>
+	            <td style="padding-right: 1.5%">
+
+	            {% if not m.read %}
+                    <span class="label label-primary">Unread</span>
+
+	            {% else %}
+
+
+                {% endif %}
+                {% if not m.subject == "Request" %}
+                <a type="button" class="btn btn-danger pull-right" rel=tooltip title="Delete Message" data-placement="left" aria-hidden="true" href="/messagecenter/delete/{{m.id}}"><span class="glyphicon glyphicon-trash"></span></a>
+
+	            </td>
+	            
+	            {% endif %}
+	            <td>
+	            
+	            <a href='/messagecenter/message/{{m.id}}' type="button" class="btn btn-default pull-right">View Message</a></td>
+	        </tr> 
+	        {% endfor %}
+	        
+	    </tbody>
+	    
+    
+    </table>
+    {% if numMessages = 0 %}
+       <h4 style="text-align: center">No Messages</h4><br>
+    {% endif %}    
+</div>
+{% endblock %}

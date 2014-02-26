@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="background-color: #FFFFFF; border-radius: 10px; " >
+
+	 <h1 class="page-header" style="text-align: center">Your Reservations
+	 </h1>
+
+    <ul class="nav nav-tabs">
+      <li><a href="#past" data-toggle="tab">Reservation History <span class="glyphicon glyphicon-time"></span></a></li>
+      <li class="active"><a href="#present" data-toggle="tab">Active Reserations <span class="badge">{{ present|length }}</span></a></li>
+      <li><a href="#future" data-toggle="tab">Scheduled Reservations <span class="glyphicon glyphicon-calendar"></span></a></li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane" id="past">
+        <table class="table table-hover bordered " style="table-layout: fixed; word-wrap: break-word; ">
+
+        <thead>
+            <tr>
+                <th style="min-width: 60px">Tool</th>
+                <th style="min-width: 240px">Start Date</th>
+                <th style="min-width: 60px">End Date</th>
+                <th style="width: 120px"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for r in past %}
+            <tr>
+                <td>{{r.tool.name}}</td>
+
+                <td>{{ r.startDate }}</td>
+                <td>{{ r.endDate }}</td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        </table>
+        {% if past|length = 0 %}
+           <h4 style="text-align: center">No Past Reservations</h4><br>
+        {% endif %}
+
+
+      </div>
+      <div class="tab-pane active" id="present">
+          <table class="table table-hover bordered " style="table-layout: fixed; word-wrap: break-word; ">
+
+        <thead>
+            <tr>
+                <th style="min-width: 60px">Tool</th>
+                <th style="min-width: 240px">Start Date</th>
+                <th style="min-width: 60px">End Date</th>
+                <th style="width: 120px"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for r in present %}
+            <tr>
+                <td>{{r.tool.name}}</td>
+
+                <td>{{ r.startDate }}</td>
+                <td>{{ r.endDate }}</td>
+                <td><a class="btn btn-primary" href="/messagecenter/reservations/return/{{r.id}}">Return Tool<a></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        </table>
+        {% if present|length = 0 %}
+           <h4 style="text-align: center">No Active Reservations</h4><br>
+        {% endif %}
+      </div>
+      <div class="tab-pane" id="future">
+          <table class="table table-hover bordered " style="table-layout: fixed; word-wrap: break-word; ">
+
+        <thead>
+            <tr>
+                <th style="min-width: 60px">Tool</th>
+                <th style="min-width: 240px">Start Date</th>
+                <th style="min-width: 60px">End Date</th>
+                <th style="width: 120px"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for r in future %}
+            <tr>
+                <td>{{r.tool.name}}</td>
+
+                <td>{{ r.startDate }}</td>
+                <td>{{ r.endDate }}</td>
+                <td><a class="btn btn-danger" href="/messagecenter/reservations/delete/{{r.id}}">Cancel<a></a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+        </table>
+        {% if future|length = 0 %}
+           <h4 style="text-align: center">No Scheduled Reservations</h4><br>
+        {% endif %}
+      </div>
+    </div>
+	 
+	 
+
+</div>
+
+<script type="text/javascript">
+  $(function () {
+    $('#myTab a:last').tab('show');
+  })
+</script>
+
+{% endblock %}

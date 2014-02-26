@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="background-color: #FFFFFF; border-radius: 10px; " >
+
+<h1 class="page-header"style="text-align: center"><a href="/messagecenter/" class="btn btn-default pull-left" style="padding-top: auto; margin-right: -90px; margin-left: 20px"><span class="glyphicon glyphicon-arrow-left" style="vertical-align: top"></span> Back to Inbox</a>{{msg.subject}}</h1>
+    <div class="hero-unit" style="padding-left: 2%; padding-right: 2%; margin-bottom: 5%; border-radius: 10px" >
+    {% if formError%}
+<div class="alert alert-danger alert-dismissable">
+  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  <strong>Warning!</strong> Invalid message content.
+</div>
+{% endif %}
+	    
+	    
+	    <h2><b>From:</b> {{msg.senderUsername}}</h2><br>
+	    <p>{{msg.content|linebreaks}}</p>
+	    <h1 class="page-header"style="text-align: center;"></h1>
+	    {% if msg.isRequest %}
+        {% if doesConflict %}
+            <div class="col-md-1" style="margin-left: -15px; margin-right: 5px; max-width: 55px" rel="tooltip" data-toggle="tooltip" title="Requested date conflicts with previously approved reservation." data-placement="right">
+            <a type="button" class="btn btn-success" disabled="disabled"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+             </div>
+        {% else %}
+            <a type="button" class="btn btn-success" href="/messagecenter/approverequest/{{msg.id}}/{{msg.toolId}}" rel=tooltip title="Approve Request" data-placement="bottom"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+        {% endif %}
+	    <a type="button" data-toggle="modal" href="#myModal" class="btn btn-danger" rel=tooltip title="Deny Request" data-placement="bottom"><span class="glyphicon glyphicon-thumbs-down"></span></a><br>
+	    {% else %}
+	    <a type="button" data-toggle="modal" href="#replyModal" class="btn btn-info">Reply</a>
+	    <a type="button" data-toggle="modal" href="/messagecenter/delete/{{msg.id}}" class="btn btn-danger">Delete</a>
+	    {% endif %}
+	 </div>
+
+    
+    
+    
+    
+    
+    
+    <!-- Modal Decline -->
+	  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	          <h4 class="modal-title">Deny Request</h4>
+	        </div>
+	        <div class="modal-body">
+	          <form action="/messagecenter/message/{{msg.id}}" class="container" style="max-width: 350px; background-color: #FFFFFF; border-radius: 10px" method="post">{% csrf_token %}
+            <h3 style="text-align: center">Reason for Denial</h3>
+            <div class="form-group container">
+            {{form.as_p}}
+        </div>
+	        </div>
+	        <div class="modal-footer">
+	          <button type="submit" class="btn btn-danger">Confirm</button>
+	        </div>
+	        </form>
+	      </div><!-- /.modal-content -->
+	    </div><!-- /.modal-dialog -->
+	  </div><!-- /.modal -->
+	  
+    <!-- Modal Reply -->
+      <div class="modal fade" id="replyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title">Reply to Message</h4>
+            </div>
+            <div class="modal-body">
+              <form action="/messagecenter/message/{{msg.id}}" class="container" style="max-width: 350px; background-color: #FFFFFF; border-radius: 10px" method="post">{% csrf_token %}
+            <h3 style="text-align: center">Message</h3>
+            <div class="form-group container">
+            {{form.as_p}}
+        </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-success">Confirm</button>
+            </div>
+            </form>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+      
+    
+    
+</div>
+{% endblock %}

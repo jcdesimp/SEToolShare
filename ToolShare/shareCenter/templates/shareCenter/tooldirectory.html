@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="background-color: #FFFFFF; border-radius: 10px; " >
+    
+	 <h1 class="page-header" style="text-align: center;">Tool Directory - ZIP Code: {{ zipCode }}</h1>
+	 <div class="container" style="background-color: #FFFFFF; border-radius: 10px; padding: 0px; margin-bottom: -20px">
+     <form class="form-inline pull-left" role='form' action="/tooldirectory/" method="post">{% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                
+                <label class="sr-only">Password</label>
+                {{ field }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-info" rel="tooltip" data-toggle="tooltip"
+                title="Filter Tools" data-placement="top"><span class="glyphicon glyphicon-search" style="vertical-align: top"></span></button>
+         {% if filtered %}
+         <a href="/tooldirectory/" class="btn btn-default">Clear Search Filters</a>
+         {% endif %}
+
+     </form>
+     <a type='button' class='btn btn-primary pull-right' href="/sharecenter/addtool" style="margin-right: 10px;" rel="tooltip" data-toggle="tooltip"
+        title="Add a tool" data-placement="top"><span class="glyphicon glyphicon-plus" style="vertical-align: top;"></span></a>
+     {% if not hasShed %}
+     <a type='button' class='btn btn-primary pull-right' href="/sharecenter/createshed" style="margin-right: 10px;" rel="tooltip" data-toggle="tooltip"
+        title="Create a new shed for your community to share tools." data-placement="left">Create A Shed <span class="glyphicon glyphicon-home" style="vertical-align: top"></span></a>
+     {% endif %}
+     </div>
+	 
+	 
+	 
+	 
+	<table class="table table-hover bordered " style="table-layout: fixed; word-wrap: break-word; ">
+	
+	<thead>
+		<tr>
+	    	<th style="min-width: 60px">Name</th>
+	    	<th style="min-width: 240px">Status</th>
+	    	<th style="min-width: 60px">Owner</th>
+	    	<th style="width: 120px"></th>	
+		</tr>
+	</thead>
+	
+	<tbody>
+		{% for t in alltools %}
+		<tr>
+			<td>{{ t.name }}</td>
+		    
+		    {% if t.available %}
+                {% if t.isReserved %}
+                    <td><span class="label label-warning">Reserved</span></td>
+                {% else %}
+		            <td><span class="label label-success">Available</span></td>
+                {% endif %}
+		    {% else %}
+		    <td><span class="label label-danger">Unavailable</span></td>
+		    {% endif %}
+		    
+		    <td><a href='/sharecenter/user/{{ t.owner.user.username }}'>{{ t.owner.user.first_name }} {{ t.owner.user.last_name }} - {{ t.owner.user.username }}</a></td>
+		    <td><a href='/sharecenter/tool/{{t.id}}/' type="button" class="btn btn-default">More Info</a></td>
+		</tr> 
+		{% endfor %}	
+	</tbody>
+	
+	</table>
+	{% if numTools = 0 %}
+       <h4 style="text-align: center">No Tools</h4><br>
+    {% endif %}  
+</div>
+
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block post-nav %}
+<!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: -100px">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="item active">
+          <img src="{{STATIC_URL}}img/modern hammer.jpg" style="width: 1800px; height: 500px" alt="First slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>What is Tool Share?</h1>
+              <p>Tool Share is meant to enable neighbors in a community to be able to share items of common use. To find out more information scroll down to the bottom of this page.</p>
+              {% if user.is_authenticated %}
+              <p><a href="/registration/" type="button" class="btn btn-primary">Tool Directory</a></p>
+              {% else %}
+              <p><a href="/registration/" type="button" class="btn btn-primary">Sign up today</a></p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="{{STATIC_URL}}img/knife.jpg" style="width: 1800px; height: 500px" alt="Second slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>How much does it cost?</h1>
+              <p>Absolutely nothing! Click below to find out more.</p>
+              <p><a href="#info" type="button" class="btn btn-primary">Learn More</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="{{STATIC_URL}}img/shovel2.jpg" style="width: 1800px; height: 500px" alt="Third slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>What if I don't want to lend out my tool anymore?</h1>
+              <p>You can change the availability of any tool at any time. To learn all about the many features of Tool Share, look below to answer all your questions.</p>
+              {% if user.is_authenticated %}
+              <p><a href="/sharecenter/user/{{user.username}}" type="button" class="btn btn-primary">My Profile</a></p>
+              {% else %}
+              <p><a href="/login/" type="button" class="btn btn-primary">Login</a></p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div><!-- /.carousel -->
+    
+    <a id = "info"></a><!-- link from the Learn More button in carousel -->
+    <!-- START THE FEATURETTES -->
+    <div class="container marketing" style="background-color: #FFFFFF; border-radius: 5px; margin-top: 25px; ">
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">What is Tool Share? <span class="text-muted">It'll blow your mind.</span></h2>
+          <p class="lead">The product we envision is called Tool Share. At its core, Tool Share is meant to enable neighbors in a community to be able to share items of common use. Anyone wanting to participate can register and be able to share or borrow items immediately. The Tool Share product is intended to improve communities by providing an easy mechanism for sharing items between neighbors.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive img-thumbnail" src="{{STATIC_URL}}img/Tool Directory.jpg" style="border-radius: 15px; " alt="Generic placeholder image">
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive img-thumbnail" src="{{STATIC_URL}}img/Cost.jpg" style="border-radius: 15px; " alt="Generic placeholder image">
+        </div>
+        <div class="col-md-7">
+          <h2 class="featurette-heading">How much does it cost? <span class="text-muted">Absolutely nothing!</span></h2>
+          <p class="lead">Simply create an account and you can start borrowing tools the same day. If you notice that you have some extra shovels or hammers laying around, then add those tools to your personal tool box and others can borrow your tools you currently don't need.</p>
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">You can always update tool info. <span class="text-muted">If you want...</span></h2>
+          <p class="lead">Navigate over to your personal tool box under 'My Profile' and change the availability to unavailable. If you don't want to lend out the tool ever again, you can de-register the tool by clicking the 'Remove Tool' button.</p>
+        </div>
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive img-thumbnail" src="{{STATIC_URL}}img/Edit Tool.jpg" style="border-radius: 15px" alt="Generic placeholder image">
+        </div>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-5">
+          <img class="featurette-image img-responsive img-thumbnail" src="{{STATIC_URL}}img/Reserve.jpg" style="border-radius: 15px; margin-bottom: 10px" alt="Generic placeholder image">
+        </div>
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Need a tool for a specific time period?  <span class="text-muted">Yes I do!</span></h2>
+          <p class="lead">Our reservation system will let you specify the dates that you need a tool for. If the request is approved, when those dates arrive, the tool will automatically be showen as unavailable so you can borrow it for that time period.</p>
+        </div>
+        
+
+       </div>
+        <!--hr class="featurette-divider">
+        
+            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable({% autoescape off %}{{bubbleCharArrayData}}{% endautoescape%});
+
+        var options = {
+          colorAxis: {colors: ['blue', 'grey']},
+          title: 'How is ToolShare doing?',
+          hAxis: {title: 'Total Tools'},
+          vAxis: {title: 'Total Reservations'},
+          bubble: {textStyle: {fontSize: 11}}
+        };
+
+        var chart = new google.visualization.BubbleChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div-->
+	</div>
+    
+{% endblock %}

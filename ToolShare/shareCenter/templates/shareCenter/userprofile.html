@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+	<div class="hero-unit col-md-5 pull-left" style="background-color: #FFFFFF; border-radius: 10px; padding-bottom: 3%">
+		<div class="container">
+		<!-- <img class="featurette-image img-responsive img-thumbnail pull-left" src="{{STATIC_URL}}img/Icon.jpg" style="border-radius: 15px; max-width: 150px; max-height: 150px; margin-top: 10px" alt="Generic placeholder image"> -->
+			<h1>{{username}}</h1>
+			<div class="panel panel-default">
+  				<div class="panel-heading"><b>Name</b></div>
+  					<div class="panel-body">
+    				{{fName}} {{lName}} - {{email}}
+  				</div>
+  			</div>
+			<div class="panel panel-default">
+  				<div class="panel-heading"><b>Address</b></div>
+  					<div class="panel-body">
+    				{{sAddress}} {{city}}, {{state}} {{zipCode}}
+  				</div>
+			</div>
+			<div class="panel panel-default">
+  				<div class="panel-heading"><b>Number of Tools</b></div>
+  					<div class="panel-body">
+    				{{numTools}}
+  				</div>
+			</div>
+			<a type="button" href="/messagecenter/sendMessage/{{ userId }}" class="btn btn-primary pull-right">Message</a>
+			{% if currUser.username == username %}
+            <a type="button" href="/sharecenter/edituser/{{username}}/" class="btn btn-primary pull-left">Edit Information</a>
+            {% endif %}
+		</div>
+	</div>
+	<div class="hero-unit col-md-6 pull-right" style="background-color: #FFFFFF; border-radius: 5px;">
+		<div class="container" style="padding-bottom: 8%">
+
+	    	<h1 class="page-header" style="text-align: center">{{username}}'s Toolbox{% if currUser.username == username %}
+            <a type='button' class='btn btn-primary pull-right' href="/sharecenter/addtool" style="margin-right: 5px; margin-left: -10px;" rel="tooltip" data-toggle="tooltip"
+                title="Add a tool" data-placement="top"><span class="glyphicon glyphicon-plus" style="vertical-align: top;"></span></a>
+            {% endif %}</h1>
+
+			<table class="table table-hover bordered " style="table-layout: fixed; word-wrap: break-word; ">
+	    	<thead>
+				<tr>
+	    			<th style="min-width: 60px">Name</th>
+	    			<th style="min-width: 240px">Available</th>
+	    			<th style="width: 120px"></th>	
+				</tr>
+			</thead>
+			
+			<tbody>
+				{% for t in userTools %}
+				<tr>
+					<td>{{ t.name }}</td>
+		    
+		    		{% if t.available %}
+                        {% if t.isReserved %}
+                            <td><span class="label label-warning">Reserved</span></td>
+                        {% else %}
+		    		        <td><span class="label label-success">Available</span></td>
+                        {% endif %}
+		    		{% else %}
+		    		<td><span class="label label-danger">Unavailable</span></td>
+		    		{% endif %}
+		    		<td><a href='/sharecenter/tool/{{t.id}}/' type="button" class="btn btn-default">More Info</a></td>
+		    	</tr> 
+				{% endfor %}	
+			</tbody>
+			</table>
+			{% if numTools = 0 %}
+                <h4 style="text-align: center">No Tools</h4>
+            {% endif %}  
+	    </div>
+      </div>
+	    </a>
+	</div>
+{% endblock %}

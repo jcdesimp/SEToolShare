@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        {% if conflict %}
+	    <div class="alert alert-danger alert-dismissable container" style="max-width: 400px; text-left: center">
+		  	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		 	<strong>Warning!</strong> Reservation Conflict(s):
+		  	{% for c in conflicts %}
+		      	<br>
+		      	<strong><b>Error: </b> {{ c.startDate }}</strong> to <strong>{{ c.endDate }}</strong> are reserved.
+		  	{% endfor %}
+		</div>
+		{% endif %}
+    <div class="container" style="max-width: 1000px">
+    <form action="/messagecenter/sendrequest/{{toolId}}/" class="container pull-left" style="max-width: 350px; background-color: #FFFFFF; border-radius: 5px" method="post">{% csrf_token %}
+        {% if tool.inShed %}
+            <h1 style="text-align: center">Reserve a Tool</h1>
+        {% else %}
+            <h1 style="text-align: center">Request a Tool</h1>
+        {% endif %}
+        <div class="form-group container">
+            {{form.as_p}}
+            {% if tool.inShed %}
+                <button type="submit" class="btn btn-primary btn-block">Reserve Tool</button>
+            {% else %}
+                <button type="submit" class="btn btn-primary btn-block">Request Tool</button>
+            {% endif %}
+        </div>
+    </form>
+    {% else %}
+        <h1 style="text-align: center">You must be logged in to submit this form</h1>
+    {% endif %}
+
+    <div class="hero-unit col-md-7 pull-right" style="background-color: #FFFFFF; border-radius: 5px;">
+		<div class="container" style="margin-top: -20px; padding-bottom: 3%">
+
+	    	<h1 class="page-header" style="text-align: center"> Current Reservations </h1>
+
+	    	<div id="collapseOne" class="panel-collapse collapse in">
+				<table class="table table-hover bordered " style="table-layout: fixed; word-wrap: break-word; ">
+			    	<thead>
+						<tr>
+			    			<th style="min-width: 60px">Start Date</th>
+			    			<th style="min-width: 240px">End Date</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						{% for r in curRes %}
+							<tr>
+								<td>{{ r.startDate }}</td>
+					   			<td>{{ r.endDate }}</td>
+					   		</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				{% if curRes|length = 0 %}
+	                <h4 style="text-align: center">No Reservations</h4>
+	            {% endif %}
+	    	</div>
+      	</div>
+	</div>
+        </div>
+    
+{% endblock %}
